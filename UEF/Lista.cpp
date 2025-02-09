@@ -73,16 +73,27 @@
                     }
                     aux=aux->next;
                 }
+                std::cout<<"Não encontrado"<<std::endl;
 
             return NULL;
             }
 
             void print_list(){
-                print_aux(this->start);
+                if(!this->empty_list()){
+                    print_aux(this->start);
+                }else
+                    std::cout<<"lista vázia"<<std::endl;
             }
 
             int get_size(){
                 return this->size;
+            }
+
+            void apagar_tudo(){
+                apagador_aux(this->start);
+                this->start=NULL;
+                this->end=NULL;
+                std::cout<<"Tudo apagado"<<std::endl;
             }
 
         private:
@@ -91,7 +102,7 @@
             int size;
 
             bool empty_list(){
-                if(start==NULL){
+                if(this->start==NULL){
                     return true;
                 }
 
@@ -113,6 +124,16 @@
                 if(aux!=NULL){
                     aux->point->apresentar();
                     print_aux(aux->next);
+                }
+            }
+
+            void apagador_aux(NO* aux){
+                if(aux!=NULL){
+                    apagador_aux(aux->next);
+
+                    delete aux->point;
+                    delete aux;
+                    this->size--;
                 }
             }
     };
