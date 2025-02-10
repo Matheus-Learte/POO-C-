@@ -12,9 +12,10 @@
             void Lutar();
 
         private:
-            Lutador* Desafiante_1, *Desafiante_2;
+            Lutador *Desafiante_1, *Desafiante_2;
             int rounds;
             bool aprovada;
+            std::string nome, ganhador;
 
             void setDesafiante_1(Lutador* fighter);
 
@@ -24,6 +25,10 @@
 
             void setAprovada(bool aux);
 
+            void setNome(std::string nome);
+
+            void setGanhador(std::string winner);
+
             Lutador* getDesafiante_1();
 
             Lutador* getDesafiante_2();
@@ -31,6 +36,10 @@
             int getRounds();
 
             bool getAprovada();
+
+            std::string getNome();
+
+            std::string getGanhador();
     };
 
 #endif

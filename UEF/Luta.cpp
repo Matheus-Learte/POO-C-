@@ -5,10 +5,12 @@ void Luta::marcarLuta(Lutador* fighter1, Lutador* fighter2){
         this->setAprovada(true);
         this->setDesafiante_1(fighter1);
         this->setDesafiante_2(fighter2);
+        this->setNome(fighter1->getNome()+" X "+fighter2->getNome());
     }else{
         this->setAprovada(false);
         this->setDesafiante_1(NULL);
         this->setDesafiante_2(NULL);
+        this->setNome("Not Approved");
     }
 }
 
@@ -28,6 +30,7 @@ void Luta::Lutar(){
 
                 this->Desafiante_1->empatarLuta();
                 this->Desafiante_2->empatarLuta();
+                this->setGanhador("Empatou");
                 break;
             
             case 1:
@@ -35,6 +38,7 @@ void Luta::Lutar(){
 
                 this->Desafiante_1->ganharLuta();
                 this->Desafiante_2->perderLuta();
+                this->setGanhador(this->getDesafiante_1()->getNome()+" ganhou");
                 break;
             
             case 2:
@@ -42,6 +46,7 @@ void Luta::Lutar(){
 
                 this->Desafiante_1->perderLuta();
                 this->Desafiante_2->ganharLuta();
+                this->setGanhador(this->getDesafiante_1()->getNome()+" ganhou");
                 break;
         }
 
@@ -65,6 +70,14 @@ void Luta::setAprovada(bool aux){
     this->aprovada=aux;
 }
 
+void Luta::setNome(std::string nome){
+    this->nome=nome;
+}
+
+void Luta::setGanhador(std::string winner){
+    this->ganhador=winner;
+}
+
 Lutador* Luta::getDesafiante_1(){
     return this->Desafiante_1;
 }
@@ -79,4 +92,12 @@ int Luta::getRounds(){
 
 bool Luta::getAprovada(){
     return this->aprovada;
+}
+
+std::string Luta::getNome(){
+    return this->nome;
+}
+
+std::string Luta::getGanhador(){
+    return this->ganhador;
 }
