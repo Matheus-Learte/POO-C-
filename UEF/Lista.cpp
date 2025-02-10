@@ -2,7 +2,8 @@
 #include <string>
 
 typedef struct no_{
-    void* point;
+    Lutador* point;
+    Luta* fight;
     struct no_* next;
 }NO;
 
@@ -19,7 +20,13 @@ class List{
             if(!this->full_list()){
                 NO* p= new NO;
 
-                p->point=aux;
+                if(this->type=='F'){
+                    p->point=(Lutador*)aux;
+                    p->fight=NULL;
+                }else{
+                    p->fight=(Luta*)aux;
+                    p->point=NULL;
+                }
                 p->next=NULL;
 
                 if(this->start==NULL){
@@ -40,9 +47,16 @@ class List{
                 NO* aux=this->start;
                 NO* ant=NULL;
 
-                while(aux!=NULL && aux->point->getNome()!=name){
-                    ant=aux;
-                    aux=aux->next;
+                if(this->type=='F'){
+                    while(aux!=NULL && aux->point->getNome()!=name){
+                        ant=aux;
+                        aux=aux->next;
+                    }
+                }else{
+                    while(aux!=NULL && aux->fight->getNome()!=name){
+                        ant=aux;
+                        aux=aux->next;
+                    }
                 }
 
                 if(aux==NULL){
@@ -56,8 +70,12 @@ class List{
                     if(aux==this->end){
                         this->end=ant;
                     }
+                    
+                    if(this->type=='L'){
+                        delete aux->fight;
+                    }else
+                        delete aux->point;
 
-                    delete aux->point;
                     delete aux;
                     this->size--;
                 }
@@ -68,11 +86,20 @@ class List{
         void* search_list(std::string name){
             NO* aux=this->start;
 
-            while(aux!=NULL){
-                if(aux->point->getNome()==name){
-                    return aux->point;
+            if(this->type=='F'){
+                while(aux!=NULL){
+                    if(aux->point->getNome()==name){
+                        return aux->point;
+                    }
+                    aux=aux->next;
                 }
-                aux=aux->next;
+            }else{
+                while(aux!=NULL){
+                    if(aux->fight->getNome()==name){
+                        return aux->fight;
+                    }
+                    aux=aux->next;
+                }
             }
             std::cout<<"Não encontrado"<<std::endl;
 
@@ -124,10 +151,10 @@ class List{
 
         void print_aux(NO* aux){
             if(aux!=NULL){
-                if(this->type=="L"){
-                    std::cout<<aux->point->getNome()<<" : "<<aux->point->getGanhador()<<std::endl;
+                if(this->type=='L'){
+                    std::cout<<aux->fight->getNome()<<" : "<<aux->fight->getGanhador()<<std::endl;
                 }else
-                    aux->point->apresentar();
+                    std::cout<<aux->point->getNome()<<std::endl;
                 print_aux(aux->next);
             }
         }
@@ -136,7 +163,11 @@ class List{
             if(aux!=NULL){
                 apagador_aux(aux->next);
 
-                delete aux->point;
+                if(this->type=='F'){
+                    delete aux->point;
+                }else
+                    delete aux->fight;
+
                 delete aux;
                 this->size--;
             }
